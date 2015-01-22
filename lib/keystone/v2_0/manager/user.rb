@@ -10,9 +10,9 @@ module Keystone
           super auth_url, @@url_endpoint
         end
 
-        def list
-          # TODO: Get complete list from Keystone
-          self
+        def users
+          users = self.class.superclass.instance_method(:list).bind(self).call
+          users ? users["users"] : nil
         end
       end
     end
