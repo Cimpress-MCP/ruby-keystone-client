@@ -45,7 +45,7 @@ module Keystone
             unless (token = get_token).nil?
               singular_method = query.sub(/s$/, '')
               self.send("#{singular_method}_manager").token = token
-              return self.send("#{singular_method}_manager").list
+              return self.send("#{singular_method}_manager").send(query)
             else
               raise "An exception has occurred attempting to invoke '#{query}'"
             end
