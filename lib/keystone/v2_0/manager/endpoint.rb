@@ -6,8 +6,13 @@ module Keystone
       class Endpoint < Keystone::V2_0::Manager::Base
         @@url_endpoint = "/endpoints"
 
-        def initialize
-          super @@url_endpoint
+        def initialize(auth_url)
+          super auth_url, @@url_endpoint
+        end
+
+        def list
+          # TODO: Get complete list from Keystone
+          self
         end
       end
     end

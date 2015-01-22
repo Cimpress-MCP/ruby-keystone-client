@@ -3,7 +3,8 @@ require "keystone/v2_0/manager/base"
 
 describe "Keystone V2.0 base manager" do
   let(:url_endpoint) { "/base/endpoint" }
-  let(:base_client)  { Keystone::V2_0::Manager::Base.new(url_endpoint) }
+  let(:auth_url)     { "http://some.host:35357/v2.0/" }
+  let(:base_client)  { Keystone::V2_0::Manager::Base.new(auth_url, url_endpoint) }
 
   it "returns an instance when initialized with a URL" do
     expect(base_client).to be_instance_of(Keystone::V2_0::Manager::Base)
