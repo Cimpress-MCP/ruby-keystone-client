@@ -1,4 +1,5 @@
 require "keystone/v2_0/manager/base"
+require "keystone/v2_0/resource/user"
 
 module Keystone
   module V2_0
@@ -12,7 +13,20 @@ module Keystone
         end
 
         def users
-          return self.class.superclass.instance_method(:list).bind(self).call
+          user_list = []
+          users     = self.class.superclass.instance_method(:list).bind(self).call
+
+          # map user hash to array of User objects
+          unless users.nil?
+            users[@@json_key].each do |user_data|
+              user_resource = Keystone::V2_0::Resource::User.new(user_data)
+              user_list << user_resource
+            end
+
+            return user_list
+          else
+            return nil
+          end
         end
       end
     end

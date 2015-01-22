@@ -28,10 +28,10 @@ describe "Keystone V2.0 service manager" do
   end
 
   describe "services" do
-    it "returns services on successful query" do
+    it "returns a list of Service instances on successful query" do
       FakeWeb.clean_registry
       FakeWeb.register_uri(:get, "#{auth_url}#{url_endpoint}", :status => [ 200 ], :body => service_data)
-      expect(service_client.services).to eq(JSON.parse(service_data)["services"])
+      expect(service_client.services.map(&:class)).to eq([ Keystone::V2_0::Resource::Service ])
     end
 
     it "returns nil when query is unsuccessful" do

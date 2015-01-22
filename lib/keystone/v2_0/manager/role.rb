@@ -1,4 +1,5 @@
 require "keystone/v2_0/manager/base"
+require "keystone/v2_0/resource/role"
 
 module Keystone
   module V2_0
@@ -12,7 +13,20 @@ module Keystone
         end
 
         def roles
-          return self.class.superclass.instance_method(:list).bind(self).call
+          role_list = []
+          roles     = self.class.superclass.instance_method(:list).bind(self).call
+
+          # map role hash to array of Role objects
+          unless roles.nil?
+            roles[@@json_key].each do |role_data|
+              role_resource = Keystone::V2_0::Resource::Role.new(role_data)
+              role_list << role_resource
+            end
+
+            return role_list
+          else
+            return nil
+          end
         end
       end
     end

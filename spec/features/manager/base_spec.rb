@@ -43,7 +43,7 @@ describe "Keystone V2.0 base manager" do
     it "returns JSON content when query is successful" do
       FakeWeb.clean_registry
       FakeWeb.register_uri(:get, "#{auth_url}#{url_endpoint}", :status => [ 200 ], :body => endpoint_data)
-      expect(base_client.list).to eq(JSON.parse(endpoint_data)[json_key])
+      expect(base_client.list).to eq(JSON.parse(endpoint_data))
     end
 
     it "returns nil when the query is unsuccessful" do

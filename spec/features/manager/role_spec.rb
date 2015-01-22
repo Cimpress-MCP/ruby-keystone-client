@@ -29,10 +29,10 @@ describe "Keystone V2.0 role manager" do
   end
 
   describe "roles" do
-    it "returns roles on successful query" do
+    it "returns a list of Role instances on successful query" do
       FakeWeb.clean_registry
       FakeWeb.register_uri(:get, "#{auth_url}#{url_endpoint}", :status => [ 200 ], :body => role_data)
-      expect(role_client.roles).to eq(JSON.parse(role_data)["roles"])
+      expect(role_client.roles.map(&:class)).to eq([ Keystone::V2_0::Resource::Role, Keystone::V2_0::Resource::Role ])
     end
 
     it "returns nil when query is unsuccessful" do
