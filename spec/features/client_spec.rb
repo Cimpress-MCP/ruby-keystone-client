@@ -27,6 +27,19 @@ describe "Keystone V2.0 client" do
       expect(client).to respond_to(:endpoints)
     end
 
+    it "returns a list of query results when the query type is invoked" do
+      data = "{ \"users\": [
+                       { \"username\": \"admin\",
+                         \"name\":     \"admin\",
+                         \"enabled\":  true,
+                         \"email\":    null,
+                         \"id\":       \"49f544c6b0d0403b97d90fe0ee0b585f\" }
+                     ]
+                   }"
+      FakeWeb.register_uri(:get, "#{auth_url}/users", :status => [ 200 ], :body => data)
+      expect(client.users).to be_instance_of(Array)
+    end
+
     it "retuns an exception when no token can be retrieved for the query type" do
       FakeWeb.clean_registry
       FakeWeb.register_uri(:post, "#{auth_url}/tokens", :status => [ 404 ], :body => "")
