@@ -29,7 +29,7 @@ module Keystone
           # having RestClient throw an exception
           RestClient::Request.execute(options) do |response, request, result|
             if response and response.code == 200
-              return JSON.parse(response.body)[self.json_key]
+              return JSON.parse(response.body)
             else
               return nil
             end

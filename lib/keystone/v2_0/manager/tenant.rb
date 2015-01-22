@@ -1,4 +1,5 @@
 require "keystone/v2_0/manager/base"
+require "keystone/v2_0/resource/tenant"
 
 module Keystone
   module V2_0
@@ -12,7 +13,20 @@ module Keystone
         end
 
         def tenants
-          return self.class.superclass.instance_method(:list).bind(self).call
+          tenant_list = []
+          tenants     = self.class.superclass.instance_method(:list).bind(self).call
+
+          # map role hash to array of Tenant objects
+          unless tenants.nil?
+            tenants[@@json_key].each do |tenant_data|
+              tenant_resource = Keystone::V2_0::Resource::Tenant.new(tenant_data)
+              tenant_list << tenant_resource
+            end
+
+            return tenant_list
+          else
+            return nil
+          end
         end
       end
     end

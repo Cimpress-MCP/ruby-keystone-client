@@ -1,4 +1,5 @@
 require "keystone/v2_0/manager/base"
+require "keystone/v2_0/resource/endpoint"
 
 module Keystone
   module V2_0
@@ -12,7 +13,20 @@ module Keystone
         end
 
         def endpoints
-          return self.class.superclass.instance_method(:list).bind(self).call
+          endpoint_list = []
+          endpoints     = self.class.superclass.instance_method(:list).bind(self).call
+
+          # map role hash to array of Endpoint objects
+          unless endpoints.nil?
+            endpoints[@@json_key].each do |endpoint_data|
+              endpoint_resource = Keystone::V2_0::Resource::Endpoint.new(endpoint_data)
+              endpoint_list << endpoint_resource
+            end
+
+            return endpoint_list
+          else
+            return nil
+          end
         end
       end
     end
