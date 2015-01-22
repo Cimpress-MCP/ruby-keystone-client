@@ -1,5 +1,8 @@
 ENV['RACK_ENV'] = 'test'
 
+# URL simulator
+require 'fakeweb'
+
 # code coverage calculations
 require 'simplecov'
 SimpleCov.start do
