@@ -12,9 +12,9 @@ module Keystone
           super auth_url, @@url_endpoint, @@json_key
         end
 
-        def users
+        def list
+          users     = super
           user_list = []
-          users     = self.class.superclass.instance_method(:list).bind(self).call
 
           # map user hash to array of User objects
           unless users.nil?

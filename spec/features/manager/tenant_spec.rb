@@ -30,13 +30,13 @@ describe "Keystone V2.0 tenant manager" do
     it "returns a list of Tenant instances on successful query" do
       FakeWeb.clean_registry
       FakeWeb.register_uri(:get, "#{auth_url}#{url_endpoint}", :status => [ 200 ], :body => tenant_data)
-      expect(tenant_client.tenants.map(&:class)).to eq([ Keystone::V2_0::Resource::Tenant ])
+      expect(tenant_client.list.map(&:class)).to eq([ Keystone::V2_0::Resource::Tenant ])
     end
 
     it "returns nil when query is unsuccessful" do
       FakeWeb.clean_registry
       FakeWeb.register_uri(:get, "#{auth_url}#{url_endpoint}", :status => [ 404 ], :body => "")
-      expect(tenant_client.tenants).to eq(nil)
+      expect(tenant_client.list).to eq(nil)
     end
   end
 end

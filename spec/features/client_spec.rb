@@ -20,14 +20,14 @@ describe "Keystone V2.0 client" do
     end
 
     it "dynamically creates manager methods for each query type" do
-      expect(client).to respond_to(:users)
-      expect(client).to respond_to(:roles)
-      expect(client).to respond_to(:tenants)
-      expect(client).to respond_to(:services)
-      expect(client).to respond_to(:endpoints)
+      expect(client).to respond_to(:user_interface)
+      expect(client).to respond_to(:role_interface)
+      expect(client).to respond_to(:tenant_interface)
+      expect(client).to respond_to(:service_interface)
+      expect(client).to respond_to(:endpoint_interface)
     end
 
-    it "returns a list of query results when the query type is invoked" do
+    it "returns an Array of query results when the query type is invoked" do
       data = "{ \"users\": [
                        { \"username\": \"admin\",
                          \"name\":     \"admin\",
@@ -37,14 +37,14 @@ describe "Keystone V2.0 client" do
                      ]
                    }"
       FakeWeb.register_uri(:get, "#{auth_url}/users", :status => [ 200 ], :body => data)
-      expect(client.users).to be_instance_of(Array)
+      expect(client.user_interface.list).to be_instance_of(Array)
     end
 
     it "retuns an exception when no token can be retrieved for the query type" do
       FakeWeb.clean_registry
       FakeWeb.register_uri(:post, "#{auth_url}/tokens", :status => [ 404 ], :body => "")
       expect {
-        client.users
+        client.user_interface.list
       }.to raise_error
     end
   end

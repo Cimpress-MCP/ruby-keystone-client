@@ -15,6 +15,8 @@ module Keystone
           self.json_key     = json_key
         end
 
+        protected
+
         def list
           options                           = {}
           options[:url]                     = "#{self.auth_url.sub(/\/$/, '')}/#{self.url_endpoint}"

@@ -56,7 +56,7 @@ Once you have your client "ks", you can continue to query for data within Keysto
 To query for tenants within Keystone:
 
 ```bash
-ks_client.tenants
+ks_client.tenant_interface.list
 
 => [#<Keystone::V2_0::Resource::Tenant:0x00000003007398 @description="Admin Tenant", @enabled=true, @id="9958cfb44628476b8f16996e76703292", @name="admin">]
 ```
@@ -66,7 +66,7 @@ ks_client.tenants
 To query for users within Keystone:
 
 ```bash
-ks_client.users
+ks_client.user_interface.list
 
 => [#<Keystone::V2_0::Resource::User:0x0000000309e518 @username="admin", @name="admin", @enabled=true, @email=nil, @id="49f544c6b0d0403b97d90fe0ee0b585f">]
 ```
@@ -76,7 +76,7 @@ ks_client.users
 To query for roles within Keystone:
 
 ```bash
-ks_client.roles
+ks_client.role_interface.list
 
 => [#<Keystone::V2_0::Resource::Role:0x0000000303e258 @enabled="True", @description="Default role for project membership", @name="_member_", @id="9fe2ff9ee4384b1894a90878d3e92bab">, #<Keystone::V2_0::Resource::Role:0x0000000303dfd8 @name="admin", @id="e409aeca08b548ceb94ced546e1a4a18">]
 ```
@@ -86,7 +86,7 @@ ks_client.roles
 To query for endpoints within Keystone:
 
 ```bash
-ks_client.endpoints
+ks_client.endpoint_interface.list
 
 => [#<Keystone::V2_0::Resource::Endpoint:0x000000032add90 @admin_url="http://127.0.0.1:35357/v2.0", @service_id="876fce0975f841fdbebd8352acda75f4", @region="regionOne", @public_url="http://10.11.13.10:5000/v2.0", @enabled=true, @id="a584ab022f0348ab9335fa2468960578", @internal_url="http://10.11.13.10:5000/v2.0">]
 ```
@@ -96,7 +96,7 @@ ks_client.endpoints
 To query for services within Keystone:
 
 ```bash
-ks_client.services
+ks_client.service_interface.list
 
 => [#<Keystone::V2_0::Resource::Service:0x00000002f9d628 @id="876fce0975f841fdbebd8352acda75f4", @enabled=true, @type="identity", @name="keystone", @description="Keystone Identity Service">]
 ```

@@ -41,11 +41,11 @@ module Keystone
         # create the manager methods through which queries will be performed
         # using meta-programming to ensure DRY principle is followed
         [ "users", "roles", "tenants", "services", "endpoints" ].each do |query|
-          self.class.send(:define_method, query) do
+          singular_method = query.sub(/s$/, '')
+          self.class.send(:define_method, "#{singular_method}_interface") do
             unless (token = get_token).nil?
-              singular_method = query.sub(/s$/, '')
               self.send("#{singular_method}_manager").token = token
-              return self.send("#{singular_method}_manager").send(query)
+              return self.send("#{singular_method}_manager")
             else
               raise "An exception has occurred attempting to invoke '#{query}'"
             end

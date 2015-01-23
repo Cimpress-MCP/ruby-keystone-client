@@ -31,13 +31,13 @@ describe "Keystone V2.0 user manager" do
     it "returns a list of User instances on successful query" do
       FakeWeb.clean_registry
       FakeWeb.register_uri(:get, "#{auth_url}#{url_endpoint}", :status => [ 200 ], :body => user_data)
-      expect(user_client.users.map(&:class)).to eq([ Keystone::V2_0::Resource::User ])
+      expect(user_client.list.map(&:class)).to eq([ Keystone::V2_0::Resource::User ])
     end
 
     it "returns nil when query is unsuccessful" do
       FakeWeb.clean_registry
       FakeWeb.register_uri(:get, "#{auth_url}#{url_endpoint}", :status => [ 404 ], :body => "")
-      expect(user_client.users).to eq(nil)
+      expect(user_client.list).to eq(nil)
     end
   end
 end
