@@ -7,7 +7,7 @@ describe "Keystone V2.0 user manager" do
   let(:auth_url)     { "http://#{host}:#{priv_port}/v2.0/" }
   let(:user_client)  { Keystone::V2_0::Manager::User.new(auth_url) }
   let(:url_endpoint) { user_client.url_endpoint }
-  let(:user_data)    { "{ \"users\": [
+  let(:users_data)   { "{ \"users\": [
                          { \"username\": \"admin\",
                            \"name\":     \"admin\",
                            \"enabled\":  true,
@@ -27,10 +27,10 @@ describe "Keystone V2.0 user manager" do
     end
   end
 
-  describe "users" do
+  describe "list" do
     it "returns a list of User instances on successful query" do
       FakeWeb.clean_registry
-      FakeWeb.register_uri(:get, "#{auth_url}#{url_endpoint}", :status => [ 200 ], :body => user_data)
+      FakeWeb.register_uri(:get, "#{auth_url}#{url_endpoint}", :status => [ 200 ], :body => users_data)
       expect(user_client.list.map(&:class)).to eq([ Keystone::V2_0::Resource::User ])
     end
 

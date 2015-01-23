@@ -6,10 +6,9 @@ module Keystone
     module Manager
       class User < Keystone::V2_0::Manager::Base
         @@url_endpoint = "users"
-        @@json_key     = "users"
 
         def initialize(auth_url)
-          super auth_url, @@url_endpoint, @@json_key
+          super auth_url, @@url_endpoint
         end
 
         def list
@@ -18,7 +17,7 @@ module Keystone
 
           # map user hash to array of User objects
           unless users.nil?
-            users[@@json_key].each do |user_data|
+            users["users"].each do |user_data|
               user_resource = Keystone::V2_0::Resource::User.new(user_data)
               user_list << user_resource
             end

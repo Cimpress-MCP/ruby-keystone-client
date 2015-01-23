@@ -6,10 +6,9 @@ module Keystone
     module Manager
       class Tenant < Keystone::V2_0::Manager::Base
         @@url_endpoint = "tenants"
-        @@json_key     = "tenants"
 
         def initialize(auth_url)
-          super auth_url, @@url_endpoint, @@json_key
+          super auth_url, @@url_endpoint
         end
 
         def list
@@ -18,7 +17,7 @@ module Keystone
 
           # map role hash to array of Tenant objects
           unless tenants.nil?
-            tenants[@@json_key].each do |tenant_data|
+            tenants["tenants"].each do |tenant_data|
               tenant_resource = Keystone::V2_0::Resource::Tenant.new(tenant_data)
               tenant_list << tenant_resource
             end

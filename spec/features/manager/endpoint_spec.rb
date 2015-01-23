@@ -7,7 +7,7 @@ describe "Keystone V2.0 endpoint manager" do
   let(:auth_url)        { "http://#{host}:#{priv_port}/v2.0/" }
   let(:endpoint_client) { Keystone::V2_0::Manager::Endpoint.new(auth_url) }
   let(:url_endpoint)    { endpoint_client.url_endpoint }
-  let(:endpoint_data)   { "{ \"endpoints\": [
+  let(:endpoints_data)  { "{ \"endpoints\": [
                               { \"adminurl\":    \"http://#{host}:#{priv_port}/v2.0\",
                                 \"service_id\":  \"876fce0975f841fdbebd8352acda75f4\",
                                 \"region\":      \"regionOne\",
@@ -29,10 +29,10 @@ describe "Keystone V2.0 endpoint manager" do
     end
   end
 
-  describe "endpoints" do
+  describe "list" do
     it "returns a list of Endpoint instances on successful query" do
       FakeWeb.clean_registry
-      FakeWeb.register_uri(:get, "#{auth_url}#{url_endpoint}", :status => [ 200 ], :body => endpoint_data)
+      FakeWeb.register_uri(:get, "#{auth_url}#{url_endpoint}", :status => [ 200 ], :body => endpoints_data)
       expect(endpoint_client.list.map(&:class)).to eq([ Keystone::V2_0::Resource::Endpoint ])
     end
 

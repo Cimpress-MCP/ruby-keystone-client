@@ -6,10 +6,9 @@ module Keystone
     module Manager
       class Endpoint < Keystone::V2_0::Manager::Base
         @@url_endpoint = "endpoints"
-        @@json_key     = "endpoints"
 
         def initialize(auth_url)
-          super auth_url, @@url_endpoint, @@json_key
+          super auth_url, @@url_endpoint
         end
 
         def list
@@ -18,7 +17,7 @@ module Keystone
 
           # map role hash to array of Endpoint objects
           unless endpoints.nil?
-            endpoints[@@json_key].each do |endpoint_data|
+            endpoints["endpoints"].each do |endpoint_data|
               endpoint_resource = Keystone::V2_0::Resource::Endpoint.new(endpoint_data)
               endpoint_list << endpoint_resource
             end
