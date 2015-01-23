@@ -5,11 +5,10 @@ require "rest-client"
 describe "Keystone V2.0 base manager" do
   let(:host)          { "some.host" }
   let(:url_endpoint)  { "/base/endpoint" }
-  let(:json_key)      { "something" }
   let(:priv_port)     { "35357" }
   let(:auth_url)      { "http://#{host}:#{priv_port}/v2.0/" }
-  let(:base_client)   { Keystone::V2_0::Manager::Base.new(auth_url, url_endpoint, json_key) }
-  let(:endpoint_data) { "{ \"#{json_key}\": [
+  let(:base_client)   { Keystone::V2_0::Manager::Base.new(auth_url, url_endpoint) }
+  let(:endpoint_data) { "{ \"blah\": [
                               { \"adminurl\":    \"http://#{host}:#{priv_port}/v2.0\",
                                 \"service_id\":  \"876fce0975f841fdbebd8352acda75f4\",
                                 \"region\":      \"regionOne\",
@@ -32,10 +31,6 @@ describe "Keystone V2.0 base manager" do
 
     it "sets the url_endpoint on create" do
       expect(base_client.url_endpoint).to eq(url_endpoint)
-    end
-
-    it "sets the json_key on create" do
-      expect(base_client.json_key).to eq(json_key)
     end
   end
 

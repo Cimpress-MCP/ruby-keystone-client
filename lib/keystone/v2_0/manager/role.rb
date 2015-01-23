@@ -6,10 +6,9 @@ module Keystone
     module Manager
       class Role < Keystone::V2_0::Manager::Base
         @@url_endpoint = "OS-KSADM/roles"
-        @@json_key     = "roles"
 
         def initialize(auth_url)
-          super auth_url, @@url_endpoint, @@json_key
+          super auth_url, @@url_endpoint
         end
 
         def list
@@ -18,7 +17,7 @@ module Keystone
 
           # map role hash to array of Role objects
           unless roles.nil?
-            roles[@@json_key].each do |role_data|
+            roles["roles"].each do |role_data|
               role_resource = Keystone::V2_0::Resource::Role.new(role_data)
               role_list << role_resource
             end

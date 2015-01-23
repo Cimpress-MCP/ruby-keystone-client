@@ -6,13 +6,11 @@ module Keystone
       class Base
         attr_accessor :auth_url
         attr_accessor :url_endpoint
-        attr_accessor :json_key
         attr_accessor :token
 
-        def initialize(auth_url, url_endpoint, json_key)
+        def initialize(auth_url, url_endpoint)
           self.auth_url     = auth_url
           self.url_endpoint = url_endpoint
-          self.json_key     = json_key
         end
 
         protected

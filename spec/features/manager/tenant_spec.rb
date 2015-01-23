@@ -7,7 +7,7 @@ describe "Keystone V2.0 tenant manager" do
   let(:auth_url)      { "http://#{host}:#{priv_port}/v2.0/" }
   let(:tenant_client) { Keystone::V2_0::Manager::Tenant.new(auth_url) }
   let(:url_endpoint)  { tenant_client.url_endpoint }
-  let(:tenant_data)   { "{ \"tenants\": [
+  let(:tenants_data)  { "{ \"tenants\": [
                             { \"description\": \"Admin Tenant\",
                               \"enabled\":     true,
                               \"id\":          \"9958cfb44628476b8f16996e76703292\",
@@ -26,10 +26,10 @@ describe "Keystone V2.0 tenant manager" do
     end
   end
 
-  describe "tenants" do
+  describe "list" do
     it "returns a list of Tenant instances on successful query" do
       FakeWeb.clean_registry
-      FakeWeb.register_uri(:get, "#{auth_url}#{url_endpoint}", :status => [ 200 ], :body => tenant_data)
+      FakeWeb.register_uri(:get, "#{auth_url}#{url_endpoint}", :status => [ 200 ], :body => tenants_data)
       expect(tenant_client.list.map(&:class)).to eq([ Keystone::V2_0::Resource::Tenant ])
     end
 

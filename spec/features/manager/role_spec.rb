@@ -7,7 +7,7 @@ describe "Keystone V2.0 role manager" do
   let(:auth_url)     { "http://#{host}:#{priv_port}/v2.0/" }
   let(:role_client)  { Keystone::V2_0::Manager::Role.new(auth_url) }
   let(:url_endpoint) { role_client.url_endpoint }
-  let(:role_data)    { "{ \"roles\": [
+  let(:roles_data)   { "{ \"roles\": [
                             { \"enabled\":     \"True\",
                               \"description\": \"Default role for project membership\",
                               \"name\":        \"_member_\",
@@ -28,10 +28,10 @@ describe "Keystone V2.0 role manager" do
     end
   end
 
-  describe "roles" do
+  describe "list" do
     it "returns a list of Role instances on successful query" do
       FakeWeb.clean_registry
-      FakeWeb.register_uri(:get, "#{auth_url}#{url_endpoint}", :status => [ 200 ], :body => role_data)
+      FakeWeb.register_uri(:get, "#{auth_url}#{url_endpoint}", :status => [ 200 ], :body => roles_data)
       expect(role_client.list.map(&:class)).to eq([ Keystone::V2_0::Resource::Role, Keystone::V2_0::Resource::Role ])
     end
 
