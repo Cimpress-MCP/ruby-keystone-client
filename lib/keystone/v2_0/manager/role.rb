@@ -12,9 +12,9 @@ module Keystone
           super auth_url, @@url_endpoint, @@json_key
         end
 
-        def roles
+        def list
+          roles     = super
           role_list = []
-          roles     = self.class.superclass.instance_method(:list).bind(self).call
 
           # map role hash to array of Role objects
           unless roles.nil?

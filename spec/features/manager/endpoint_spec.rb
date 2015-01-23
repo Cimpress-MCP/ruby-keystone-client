@@ -33,13 +33,13 @@ describe "Keystone V2.0 endpoint manager" do
     it "returns a list of Endpoint instances on successful query" do
       FakeWeb.clean_registry
       FakeWeb.register_uri(:get, "#{auth_url}#{url_endpoint}", :status => [ 200 ], :body => endpoint_data)
-      expect(endpoint_client.endpoints.map(&:class)).to eq([ Keystone::V2_0::Resource::Endpoint ])
+      expect(endpoint_client.list.map(&:class)).to eq([ Keystone::V2_0::Resource::Endpoint ])
     end
 
     it "returns nil when query is unsuccessful" do
       FakeWeb.clean_registry
       FakeWeb.register_uri(:get, "#{auth_url}#{url_endpoint}", :status => [ 404 ], :body => "")
-      expect(endpoint_client.endpoints).to eq(nil)
+      expect(endpoint_client.list).to eq(nil)
     end
   end
 end
