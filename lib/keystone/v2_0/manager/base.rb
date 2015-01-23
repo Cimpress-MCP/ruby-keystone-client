@@ -35,6 +35,28 @@ module Keystone
             end
           end
         end
+
+        def create(payload)
+          options                           = {}
+          options[:url]                     = "#{self.auth_url.sub(/\/$/, '')}/#{self.url_endpoint}"
+          options[:method]                  = :post
+          options[:headers]                 = {}
+          options[:headers]["X-Auth-Token"] = self.token
+          options[:headers]["User-Agent"]   = "keystone-client"
+          options[:headers]["Accept"]       = "application/json"
+          options[:headers]["Content-Type"] = "application/json"
+          options[:payload]                 = payload
+
+          # provide a block to ensure the response is parseable rather than
+          # having RestClient throw an exception
+          RestClient::Request.execute(options) do |response, request, result|
+            if response and response.code == 200
+              return JSON.parse(response.body)
+            else
+              return nil
+            end
+          end
+        end
       end
     end
   end

@@ -27,6 +27,23 @@ module Keystone
             return nil
           end
         end
+
+        def create(name: '', type: '', description: '')
+          create_key = "OS-KSADM:service"
+          payload = { create_key =>
+                      { "name"        => name,
+                        "type"        => type,
+                        "description" => description
+                      }
+                    }
+          service_data = super(payload.to_json)
+
+          if service_data and service_data[create_key]
+            return Keystone::V2_0::Resource::Service.new(service_data[create_key])
+          else
+            return nil
+          end
+        end
       end
     end
   end
