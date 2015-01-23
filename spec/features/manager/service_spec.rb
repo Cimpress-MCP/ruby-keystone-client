@@ -40,4 +40,52 @@ describe "Keystone V2.0 service manager" do
       expect(service_client.list).to eq(nil)
     end
   end
+
+  describe "create" do
+    let(:name)         { "test" }
+    let(:type)         { "test tool" }
+    let(:description)  { "Some kind of test" }
+    let(:service_data) { "{ \"OS-KSADM:service\":
+                            { \"id\":          \"43dc90f2398b4510acc8f07901e30ed8\",
+                              \"enabled\":     true,
+                              \"type\":        \"#{type}\",
+                              \"name\":        \"#{name}\",
+                              \"description\": \"#{description}\" }
+                          }" }
+
+    describe "when successful" do
+      before do
+        FakeWeb.clean_registry
+        FakeWeb.register_uri(:post, "#{auth_url}#{url_endpoint}", :status => [ 200 ], :body => service_data)
+        @service = service_client.create(name: name, type: type, description: description)
+      end
+
+      it "returns a Service instance" do
+        expect(@service).to be_instance_of(Keystone::V2_0::Resource::Service)
+      end
+
+      it "assigns an ID" do
+        expect(@service.id).to be_truthy
+      end
+
+      it "assigns the name" do
+        expect(@service.name).to eq(name)
+      end
+
+      it "assigns the type" do
+        expect(@service.type).to eq(type)
+      end
+
+      it "assigns the description" do
+        expect(@service.description).to eq(description)
+      end
+    end
+
+    it "returns nil when not able to be created" do
+      FakeWeb.clean_registry
+      FakeWeb.register_uri(:post, "#{auth_url}#{url_endpoint}", :status => [ 404 ], :body => "")
+      service = service_client.create(name: name, type: type, description: description)
+      expect(@service).to eq(nil)
+    end
+  end
 end

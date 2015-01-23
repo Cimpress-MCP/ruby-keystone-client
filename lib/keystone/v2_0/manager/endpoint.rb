@@ -27,6 +27,26 @@ module Keystone
             return nil
           end
         end
+
+        def create(service_id: '', region: '', admin_url: '', internal_url: '', public_url: '', enabled: true)
+          create_key = "endpoint"
+          payload = { create_key =>
+                      { "service_id"  => service_id,
+                        "region"      => region,
+                        "adminurl"    => admin_url,
+                        "internalurl" => internal_url,
+                        "publicurl"   => public_url,
+                        "enabled"     => enabled
+                      }
+                    }
+          endpoint_data = super(payload.to_json)
+
+          if endpoint_data and endpoint_data[create_key]
+            return Keystone::V2_0::Resource::Endpoint.new(endpoint_data[create_key])
+          else
+            return nil
+          end
+        end
       end
     end
   end

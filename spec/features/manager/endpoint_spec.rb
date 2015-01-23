@@ -42,4 +42,79 @@ describe "Keystone V2.0 endpoint manager" do
       expect(endpoint_client.list).to eq(nil)
     end
   end
+
+  describe "create" do
+    let(:service_id)    { "93092u092305920395" }
+    let(:region)        { "test" }
+    let(:admin_url)     { "/something_else" }
+    let(:internal_url)  { "/something" }
+    let(:public_url)    { "/something" }
+    let(:enabled)       { true }
+    let(:endpoint_data) { "{ \"endpoint\":
+                            { \"adminurl\":    \"#{admin_url}\",
+                              \"service_id\":  \"#{service_id}\",
+                              \"region\":      \"#{region}\",
+                              \"enabled\":     #{enabled},
+                              \"id\":          \"q93h08923hg02h03929350h\",
+                              \"internalurl\": \"#{internal_url}\",
+                              \"publicurl\":   \"#{public_url}\" }
+                          }" }
+
+    describe "when successful" do
+      before do
+        FakeWeb.clean_registry
+        FakeWeb.register_uri(:post, "#{auth_url}#{url_endpoint}", :status => [ 200 ], :body => endpoint_data)
+        @endpoint = endpoint_client.create(service_id:   service_id,
+                                           region:       region,
+                                           admin_url:    admin_url,
+                                           internal_url: internal_url,
+                                           public_url:   public_url,
+                                           enabled:      enabled)
+      end
+
+      it "returns a Service instance" do
+        expect(@endpoint).to be_instance_of(Keystone::V2_0::Resource::Endpoint)
+      end
+
+      it "assigns an ID" do
+        expect(@endpoint.id).to be_truthy
+      end
+
+      it "assigns the service_id" do
+        expect(@endpoint.service_id).to eq(service_id)
+      end
+
+      it "assigns the region" do
+        expect(@endpoint.region).to eq(region)
+      end
+
+      it "assigns the admin_url" do
+        expect(@endpoint.admin_url).to eq(admin_url)
+      end
+
+      it "assigns the internal_url" do
+        expect(@endpoint.internal_url).to eq(internal_url)
+      end
+
+      it "assigns the public_url" do
+        expect(@endpoint.public_url).to eq(public_url)
+      end
+
+      it "assigns enabled" do
+        expect(@endpoint.enabled).to eq(enabled)
+      end
+    end
+
+    it "returns nil when not able to be created" do
+      FakeWeb.clean_registry
+      FakeWeb.register_uri(:post, "#{auth_url}#{url_endpoint}", :status => [ 404 ], :body => "")
+      endpoint = endpoint_client.create(service_id:   service_id,
+                                        region:       region,
+                                        admin_url:    admin_url,
+                                        internal_url: internal_url,
+                                        public_url:   public_url,
+                                        enabled:      enabled)
+      expect(@endpoint).to eq(nil)
+    end
+  end
 end
