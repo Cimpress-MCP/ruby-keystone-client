@@ -8,11 +8,12 @@ Gem::Specification.new do |spec|
   spec.version       = Keystone::V2_0::VERSION
   spec.authors       = ["Justin Karimi"]
   spec.email         = ["jekhokie@gmail.com"]
-  spec.summary       = %q{Ruby OpenStack Keystone Client (API V2.0).}
+  spec.summary       = %q{Ruby OpenStack Keystone Client (API V2.0)}
   spec.description   = %q{A Ruby-based client library to interact with the Keystone service.}
-  spec.homepage      = ""
+  spec.homepage      = "https://github.com/jekhokie/ruby-keystone-client"
   spec.license       = "Apache 2.0"
 
+  spec.has_rdoc      = false
   spec.files         = `git ls-files -z`.split("\x0")
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
